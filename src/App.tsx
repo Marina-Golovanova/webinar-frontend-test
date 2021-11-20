@@ -20,7 +20,7 @@ const theme = createMuiTheme({
 
 function App() {
   const a = 1;
-  a = 3;
+  a = 5;
 
   return (
     <TodoItemsContextProvider>
