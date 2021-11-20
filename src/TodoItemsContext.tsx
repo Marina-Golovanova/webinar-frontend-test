@@ -5,6 +5,7 @@ import {
   useEffect,
   useReducer,
 } from "react";
+import { TagContext } from "./context";
 
 export interface TodoItem {
   id: string;
@@ -19,7 +20,7 @@ interface TodoItemsState {
 }
 
 interface TodoItemsAction {
-  type: "loadState" | "add" | "delete" | "toggleDone";
+  type: "loadState" | "add" | "delete" | "toggleDone" | "filter";
   data: any;
 }
 
@@ -70,6 +71,12 @@ export const useTodoItems = () => {
   return todoItemsContext;
 };
 
+export const useFilterTag = () => {
+  const { tag } = useContext(TagContext);
+
+  return tag;
+};
+
 function todoItemsReducer(state: TodoItemsState, action: TodoItemsAction) {
   switch (action.type) {
     case "loadState": {
@@ -87,6 +94,13 @@ function todoItemsReducer(state: TodoItemsState, action: TodoItemsAction) {
       return {
         ...state,
         todoItems: state.todoItems.filter(({ id }) => id !== action.data.id),
+      };
+    case "filter":
+      return {
+        ...state,
+        todoItems: state.todoItems.filter(({ tags }) =>
+          tags?.includes(useFilterTag())
+        ),
       };
     case "toggleDone":
       const itemIndex = state.todoItems.findIndex(

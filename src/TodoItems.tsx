@@ -10,7 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import classnames from "classnames";
 import { motion } from "framer-motion";
-import { TodoItem, useTodoItems } from "./TodoItemsContext";
+import { TodoItem, useFilterTag, useTodoItems } from "./TodoItemsContext";
 import { Tag } from "./Components/Tag/Tag";
 
 const spring = {
@@ -44,13 +44,24 @@ export const TodoItemsList = function () {
     return 0;
   });
 
+  const tag = useFilterTag();
+
+  const filteredItems = todoItems.filter((el) => el.tags?.includes(tag));
+
   return (
     <ul className={classes.root}>
-      {sortedItems.map((item) => (
-        <motion.li key={item.id} transition={spring} layout={true}>
-          <TodoItemCard item={item} />
-        </motion.li>
-      ))}
+      {!tag.length &&
+        sortedItems.map((item) => (
+          <motion.li key={item.id} transition={spring} layout={true}>
+            <TodoItemCard item={item} />
+          </motion.li>
+        ))}
+      {tag &&
+        filteredItems.map((item) => (
+          <motion.li key={item.id} transition={spring} layout={true}>
+            <TodoItemCard item={item} />
+          </motion.li>
+        ))}
     </ul>
   );
 };

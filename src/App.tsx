@@ -4,8 +4,11 @@ import Typography from "@material-ui/core/Typography";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { TodoItemsList } from "./TodoItems";
+import { TodoFilter } from "./TodoFilter";
 import { TodoItemsContextProvider } from "./TodoItemsContext";
 import TodoItemForm from "./TodoItemForm";
+import { useState } from "react";
+import { TagContext } from "./context";
 
 const theme = createMuiTheme({
   palette: {
@@ -19,12 +22,16 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const [tag, setTag] = useState("");
+
   return (
-    <TodoItemsContextProvider>
-      <ThemeProvider theme={theme}>
-        <Content />
-      </ThemeProvider>
-    </TodoItemsContextProvider>
+    <TagContext.Provider value={{ tag, setTag }}>
+      <TodoItemsContextProvider>
+        <ThemeProvider theme={theme}>
+          <Content />
+        </ThemeProvider>
+      </TodoItemsContextProvider>
+    </TagContext.Provider>
   );
 }
 
@@ -38,6 +45,7 @@ function Content() {
       </header>
       <main>
         <TodoItemForm />
+        <TodoFilter />
         <TodoItemsList />
       </main>
     </Container>
