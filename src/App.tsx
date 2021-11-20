@@ -19,8 +19,6 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const a = 1;
-  a = 3;
   return (
     <TodoItemsContextProvider>
       <ThemeProvider theme={theme}>
